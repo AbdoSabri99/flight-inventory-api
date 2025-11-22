@@ -14,16 +14,17 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
 import java.time.LocalDate;
 
+import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-@Import({com.fasterxml.jackson.databind.ObjectMapper.class, SecurityConfig.class})
+@Import({com.fasterxml.jackson.databind.ObjectMapper.class})
 
 class FlightIntegrationTest {
 
@@ -38,6 +39,7 @@ class FlightIntegrationTest {
 
     private MockMvc mockMvc;
 
+
     private String tokenAdmin;
     private String tokenUser;
 
@@ -49,7 +51,7 @@ class FlightIntegrationTest {
         objectMapper.registerModule(new JavaTimeModule());
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         flightRepository.deleteAll();
-        mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
+        mockMvc = MockMvcBuilders.webAppContextSetup(context).apply(springSecurity()).build();
 
         // Login as admin
         String adminJson = "{\"username\":\"admin\",\"password\":\"admin123\"}";
