@@ -72,9 +72,7 @@ POST /api/auth/login
 
 ```json
 {
-  "accessToken": "jwt-token",
-  "username": "admin",
-  "roles": ["ADMIN"]
+  "accessToken": "jwt-token"
 }
 ```
 
