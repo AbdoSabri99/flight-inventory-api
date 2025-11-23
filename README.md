@@ -20,7 +20,7 @@ A **Spring Boot REST API** for managing airline flights, with JWT authentication
 ### Clone the repository
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/AbdoSabri99/flight-inventory-api.git
 cd flight-inventory-api
 ```
 
