@@ -177,15 +177,4 @@ DELETE /api/flights/{id}
 4. **Verify 401/403 JSON responses** when JWT is missing/invalid or user role is insufficient
 
 ---
-
-## 📝 License
-
-This project is licensed under the MIT License.
-
-## 🤝 Contributing
-
-Contributions, issues, and feature requests are welcome!
-
----
-
 **Made with ❤️ using Spring Boot**
