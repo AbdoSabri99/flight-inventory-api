@@ -42,7 +42,7 @@ The application will start on `http://localhost:8080` by default.
 | admin    | admin123   | ADMIN |
 | user     | user123    | USER  |
 
-- **Admin** can create, delete, and update flights
+- **Admin** can create and delete flights
 - **User** can only view flights
 
 > Passwords are encoded using `BCryptPasswordEncoder`.
