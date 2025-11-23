@@ -1,7 +1,9 @@
 
 package com.airxelerate.flight_inventory_api.exceptions;
 
+import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
+import jakarta.servlet.ServletException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,29 +59,5 @@ public class GlobalExceptionHandler {
         body.put("details", errors);
         body.put("timestamp", LocalDateTime.now());
         return ResponseEntity.badRequest().body(body);
-    }
-
-    // Handle JWT auth errors
-    @ExceptionHandler({ JwtException.class, AuthenticationException.class })
-    public ResponseEntity<Map<String, Object>> handleAuthErrors(Exception ex) {
-        log.warn("Authentication/Authorization error", ex); // Log exception
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", "Unauthorized");
-        body.put("message", "Authentication failed or token is invalid.");
-        body.put("timestamp", LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(body);
-    }
-
-    // Handle access denied (role-based)
-    @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<Map<String, Object>> handleAccessDenied(AccessDeniedException ex) {
-        log.warn("Access denied", ex); // Log exception
-
-        Map<String, Object> body = new HashMap<>();
-        body.put("error", "Forbidden");
-        body.put("message", "You do not have permission to perform this action.");
-        body.put("timestamp", LocalDateTime.now());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
     }
 }

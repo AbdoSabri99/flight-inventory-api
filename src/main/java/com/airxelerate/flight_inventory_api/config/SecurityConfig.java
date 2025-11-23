@@ -1,6 +1,8 @@
 package com.airxelerate.flight_inventory_api.config;
 
 import com.airxelerate.flight_inventory_api.filters.JwtAuthFilter;
+import com.airxelerate.flight_inventory_api.handlers.JwtAccessDeniedHandler;
+import com.airxelerate.flight_inventory_api.handlers.JwtAuthenticationEntryPoint;
 import com.airxelerate.flight_inventory_api.services.AppUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -17,14 +19,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.HandlerExceptionResolver;
 
 @Configuration
 @RequiredArgsConstructor
 //@EnableMethodSecurity
 public class SecurityConfig {
+
     private final JwtAuthFilter jwtAuthFilter;
     private final AppUserDetailsService userDetailsService;
-
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -40,6 +45,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/flights/**").authenticated()
                         .anyRequest().authenticated() // all other endpoints need auth
                 )
+                .exceptionHandling(ex->ex.
+                                 authenticationEntryPoint(jwtAuthenticationEntryPoint)
+                                .accessDeniedHandler(jwtAccessDeniedHandler))
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class); // JWT filter
 
         return http.build();
